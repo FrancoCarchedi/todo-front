@@ -15,11 +15,11 @@ const TaskToolbar = ({ setFilterStatus }) => {
       value={taskStatus} 
       exclusive
       onChange={handleStatus}
-      sx={{ marginBottom: 3, backgroundColor: '#F5F5F5' }}
+      sx={{ marginBottom: 3, backgroundColor: '#F5F5F5', width: { xs: '100%', sm: 'fit-content' } }}
     >
-      <ToggleButton value="all" sx={{ width: 160, fontWeight: 600 }}>Todas</ToggleButton>
-      <ToggleButton value="pending" sx={{ width: 160, fontWeight: 600 }}>Pendientes</ToggleButton>
-      <ToggleButton value="complete" sx={{ width: 160, fontWeight: 600 }}>Completadas</ToggleButton>
+      <ToggleButton value="all" sx={{ width: { xs: '100%', md: 160 }, fontWeight: 600 }}>Todas</ToggleButton>
+      <ToggleButton value="pending" sx={{ width: { xs: '100%', md: 160 }, fontWeight: 600 }}>Pendientes</ToggleButton>
+      <ToggleButton value="complete" sx={{ width: { xs: '100%', md: 160 }, fontWeight: 600 }}>Completadas</ToggleButton>
     </ToggleButtonGroup>
   )
 }

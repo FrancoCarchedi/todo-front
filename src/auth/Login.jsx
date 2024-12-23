@@ -55,7 +55,7 @@ const Login = () => {
   };
 
   return (
-    <Box component="section" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100dvh', backgroundColor: '#262D68' }}>
+    <Box component="section" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100dvh', backgroundColor: '#262D68', paddingInline: 1 }}>
       <Box component="form" onSubmit={(e) => { e.preventDefault(); handleLogin(); }} autoComplete="off" sx={{
         textAlign: 'center',
         width: '100%',

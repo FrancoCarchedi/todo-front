@@ -132,8 +132,8 @@ const TaskUpdaterModal = ({ dialogStatus = false, handleOnClose = () => {}, task
 
             <Accordion>
               <AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel1a-content" id="panel1a-header">
-                <Typography sx={{ width: '30%' }}>Estado</Typography>
-                <Typography>{ status === 'pending' ? "Pendiente" : "Completada"}</Typography>
+                <Typography sx={{ width: '30%', marginRight: 1 }}>Estado:</Typography>
+                <Typography sx={{ color: '#666666' }}>{ status === 'pending' ? "Pendiente" : "Completada"}</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box>
@@ -160,7 +160,7 @@ const TaskUpdaterModal = ({ dialogStatus = false, handleOnClose = () => {}, task
           </div>
         )}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ flexWrap: { xs: 'wrap', sm: 'nowrap' }, gap: 1 }}>
         <Button onClick={handleDeleteTask} color="error">
           Borrar Tarea
         </Button>

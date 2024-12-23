@@ -9,6 +9,7 @@ import getTasksByUser from './services/getTasksByUser'
 import { useQuery } from '@tanstack/react-query'
 import CircularProgress from '@mui/material/CircularProgress'
 import TaskUpdaterModal from './components/TaskUpdaterModal'
+import TaskMenu from './components/TaskMenu'
 
 const TodoContainer = () => {
   const [filterStatus, setFilterStatus] = useState('all');
@@ -54,21 +55,23 @@ const TodoContainer = () => {
         component="div"
         sx={{
           width: '100%',
+          paddingInline: 1,
           maxWidth: 1280,
           backgroundColor: 'transparent' 
         }}
       >
+        <TaskMenu />
         <Typography variant="h4" gutterBottom sx={{ color: '#F5F5F5' }}>Mis tareas</Typography>
         <TaskToolbar setFilterStatus={setFilterStatus}/>
         { isLoading ? 
         <Box>
-          <CircularProgress />
+          <CircularProgress sx={{ color: '#F5F5F5' }}/>
         </Box> : 
         <Box
           sx={{
             height: 400,
             overflowY: 'auto',
-            paddingRight: 3,
+            paddingRight: { xs: 1, sm: 3 },
             marginBottom: 3,
             '&::-webkit-scrollbar': {
               width: '4px',
