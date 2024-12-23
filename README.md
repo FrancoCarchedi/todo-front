@@ -4,11 +4,10 @@ Desarrollo de Front End, para proyecto de tipo challenge, de usuarios y tareas.
 
 ## Tabla de Contenidos
 
-1. [Descripción General](#descripcion-general)
-2. [Tecnologías Utilizadas](#tecnologias-utilizadas)
-3. [Características](#caracteristicas)
-4. [Instalación y Configuración](#instalacion-y-configuracion)
-5. [Estructura del Proyecto](#estructura-del-proyecto)
+1. [Descripción General](#descripción-general)
+2. [Tecnologías Utilizadas](#tecnologías-utilizadas)
+3. [Características](#características)
+4. [Instalación y Configuración](#instalación-y-configuración)
 
 ---
 
@@ -55,12 +54,14 @@ Desarrollo de Front End, para proyecto de tipo challenge, de usuarios y tareas.
    npm install
    ```
 
-4. Iniciar el servidor de desarrollo:
+4. Crear un archivo .env basado en .env.example y configurar las variables necesarias.
+
+5. Iniciar el servidor de desarrollo:
    ```bash
    npm start
    ```
 
-5. Abrir en el navegador:
+6. Abrir en el navegador:
    ```
     http://localhost:3000
    ```
