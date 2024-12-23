@@ -16,7 +16,6 @@ const TaskInput = () => {
 
   const mutation = useMutation({
     mutationFn: async (taskName) => {
-      console.log(taskName)
       return createTask(taskName, user.id, user.token);
     },
     onSuccess: () => {

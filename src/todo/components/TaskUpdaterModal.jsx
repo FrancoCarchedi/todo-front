@@ -114,7 +114,6 @@ const TaskUpdaterModal = ({ dialogStatus = false, handleOnClose = () => {}, task
               type="date"
               value={endDate}
               onChange={(e) => {
-                console.log("Fecha seleccionada (sin procesar):", e.target.value);
                 setEndDate(adjustDateToLocal(e.target.value));
               }}
               fullWidth

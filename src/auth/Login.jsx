@@ -44,13 +44,12 @@ const Login = () => {
       const response = await login(email, password);
 
       if (response.success) {
-        setApiError(''); // Limpiar errores
-        navigate('/'); // Redirigir después del login
+        setApiError('');
+        navigate('/');
       } else {
         setApiError("Usuario o contraseña incorrectos.");
       }
     } catch (error) {
-      console.log(error.message)
       setApiError('Ocurrió un error al intentar iniciar sesión.');
     }
   };

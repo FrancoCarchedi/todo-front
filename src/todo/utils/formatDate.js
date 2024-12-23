@@ -1,6 +1,5 @@
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  console.log("DateString", dateString)
 
   const formatter = new Intl.DateTimeFormat('es-AR', {
     day: '2-digit',
