@@ -3,13 +3,15 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import getTasksById from '../services/getTaskById';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AuthContext } from '../../auth/context/AuthContext';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, CircularProgress, TextField, Typography } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import updateTask from '../services/updateTask';
 import deleteTask from '../services/deleteTask';
+import getTaskById from '../services/getTaskById';
+import adjustDateToLocal from '../utils/adjustDateToLocal';
+import formatToBackendDate from '../utils/formatToBackendDate';
 
 const TaskUpdaterModal = ({ dialogStatus = false, handleOnClose = () => {}, taskId }) => {
   const [taskName, setTaskName] = useState('');
@@ -19,55 +21,58 @@ const TaskUpdaterModal = ({ dialogStatus = false, handleOnClose = () => {}, task
 
   const { user } = useContext( AuthContext )
 
+  const queryClient = useQueryClient();
+
   const { isLoading, data, error } = useQuery({
     queryKey: ['task', taskId],
-    queryFn: () => getTasksById(taskId, user.token),
+    queryFn: () => getTaskById(taskId, user.token),
     enabled: !!taskId,
-    onSuccess: (taskData) => {
-      // Sincroniza los datos obtenidos al estado local
-      console.log(taskData)
-      setTaskName(taskData.name);
-      setEndDate(taskData.endsDate ? taskData.endsDate.split('T')[0] : ''); // Ajusta el formato de fecha
-      setDescription(taskData.description);
-      setStatus(taskData.status);
-    },
   })
+
+  useEffect(() => {
+    if (data) {
+      setTaskName(data.name || '');
+      setEndDate(data.endsDate ? data.endsDate.split('T')[0] : ''); // Ajusta el formato de la fecha
+      setDescription(data.description || '');
+      setStatus(data.status || 'pending'); // Valor por defecto 'pending'
+    }
+  }, [data]);
 
   const updateMutation = useMutation({
     mutationFn: async ({ taskId, taskData }) => {
       return updateTask(taskId, taskData, user.token);
     },
     onSuccess: () => {
-      handleOnClose();
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
+      handleOnClose();
     },
   })
 
   const deleteMutation = useMutation({
     mutationFn: async ({ taskId }) => {
-      return updateTask(taskId, user.token);
+      return deleteTask(taskId, user.token);
     },
     onSuccess: () => {
-      handleOnClose();
       queryClient.invalidateQueries({ queryKey: ['tasks'] })
+      handleOnClose();
     },
   })
 
   const handleSaveChanges = () => {
     const updatedTask = {
       name: taskName,
-      endsDate: endDate,
+      endsDate: formatToBackendDate(endDate),
       description: description,
       status: status,
     };
     
-    updateMutation({ taskId, taskData: updatedTask });
-    handleOnClose();  // Cerrar el modal
+    updateMutation.mutate({ taskId, taskData: updatedTask });
+    handleOnClose();
   };
 
   const handleDeleteTask = () => {
-    deleteMutation({ taskId });
-    handleOnClose();  // Cerrar el modal
+    deleteMutation.mutate({ taskId });
+    handleOnClose(); 
   };
 
   useEffect(() => {
@@ -78,8 +83,6 @@ const TaskUpdaterModal = ({ dialogStatus = false, handleOnClose = () => {}, task
       setStatus('pending');
     }
   }, [dialogStatus]);
-
-  console.log(endDate)
 
   return (
     <Dialog
@@ -110,7 +113,10 @@ const TaskUpdaterModal = ({ dialogStatus = false, handleOnClose = () => {}, task
               // label="Fecha de Vencimiento"
               type="date"
               value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              onChange={(e) => {
+                console.log("Fecha seleccionada (sin procesar):", e.target.value);
+                setEndDate(adjustDateToLocal(e.target.value));
+              }}
               fullWidth
               margin="normal"
             />
@@ -156,12 +162,11 @@ const TaskUpdaterModal = ({ dialogStatus = false, handleOnClose = () => {}, task
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleSaveChanges} color="primary">
-          Guardar Cambios
-        </Button>
-
-        <Button onClick={handleDeleteTask} color="secondary">
+        <Button onClick={handleDeleteTask} color="error">
           Borrar Tarea
+        </Button>
+        <Button onClick={handleSaveChanges} color="primary" variant='contained'>
+          Guardar Cambios
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,6 +1,6 @@
 # Sistema de Gestión de Tareas
 
-Breve descripción del proyecto: ¿Qué problema resuelve? ¿Cuál es su propósito?
+Desarrollo de Front End, para proyecto de tipo challenge, de usuarios y tareas.
 
 ## Tabla de Contenidos
 
@@ -8,8 +8,7 @@ Breve descripción del proyecto: ¿Qué problema resuelve? ¿Cuál es su propós
 2. [Tecnologías Utilizadas](#tecnologias-utilizadas)
 3. [Características](#caracteristicas)
 4. [Instalación y Configuración](#instalacion-y-configuracion)
-5. [Uso](#uso)
-6. [Estructura del Proyecto](#estructura-del-proyecto)
+5. [Estructura del Proyecto](#estructura-del-proyecto)
 
 ---
 
@@ -65,24 +64,3 @@ Breve descripción del proyecto: ¿Qué problema resuelve? ¿Cuál es su propós
    ```
     http://localhost:3000
    ```
-
-## Uso
-
-Describir brevemente cómo utilizar la aplicación, incluyendo capturas de pantalla si es necesario.
-
-## Estructura del Proyecto
-
-```plaintext
-todo-front/
-├── public/            # Archivos públicos como index.html
-├── src/               # Código fuente principal
-│   ├── components/    # Componentes reutilizables
-│   ├── pages/         # Vistas principales
-│   ├── assets/        # Imágenes, fuentes, etc.
-│   ├── hooks/         # Hooks personalizados
-│   ├── context/       # Context API
-│   └── utils/         # Funciones utilitarias
-├── .gitignore         # Archivos ignorados por Git
-├── package.json       # Dependencias y scripts del proyecto
-└── README.md          # Este archivo
-```

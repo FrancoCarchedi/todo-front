@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getTasksById = async (taskId, token) => {
+const getTaskById = async (taskId, token) => {
   try {
     const response = await axios.get(
       `${process.env.RENDER_API_URL}/tasks/${taskId}`,
@@ -18,4 +18,4 @@ const getTasksById = async (taskId, token) => {
   }
 };
 
-export default getTasksById;
+export default getTaskById;
