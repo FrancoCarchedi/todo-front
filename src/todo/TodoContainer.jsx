@@ -1,74 +1,44 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import Box from '@mui/material/Box'
 import TaskCard from './components/TaskCard'
 import TaskInput from './components/TaskInput'
 import TaskToolbar from './components/TaskToolbar'
-import { Typography } from '@mui/material'
-
-const TASKS = [
-  {
-    id: 1,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "completed"
-  },
-  {
-    id: 2,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-  {
-    id: 3,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-  {
-    id: 4,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-  {
-    id: 5,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-  {
-    id: 6,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-  {
-    id: 7,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-  {
-    id: 8,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-  {
-    id: 9,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-  {
-    id: 10,
-    name: "Iniciar sesión con el usuario otorgado",
-    endsDate: "19/12/2024",
-    status: "pending"
-  },
-]
+import Typography from '@mui/material/Typography'
+import { AuthContext } from '../auth/context/AuthContext'
+import getTasksByUser from './services/getTasksByUser'
+import { useQuery } from '@tanstack/react-query'
+import CircularProgress from '@mui/material/CircularProgress'
+import TaskUpdaterModal from './components/TaskUpdaterModal'
 
 const TodoContainer = () => {
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [taskToEditState, setTaskToEditState] = useState(null);
+  const [updaterModalState, setUpdaterModalState] = useState(false);
+
+  const handleClickOpen = (taskId) => {
+    setTaskToEditState(taskId);
+    setUpdaterModalState(true);
+  };
+
+  const handleClose = () => {
+    setUpdaterModalState(false);
+    setTaskToEditState(null);
+  };
+
+  const { user } = useContext( AuthContext )
+
+  const { isLoading, data, error } = useQuery({
+    queryKey: ['tasks', { orderBy: "id", orderDirection: "ASC" }],
+    queryFn: () => getTasksByUser(user.id, user.token)
+  })
+
+  const filteredTasks = data?.filter( task => {
+    if (filterStatus === 'all') return true;
+    if (filterStatus === 'pending') return task.status === 'pending';
+    if (filterStatus === 'complete') return task.status === 'completed';
+    return true;
+  });
+
   return (
     <Box 
       component="section" 
@@ -89,7 +59,11 @@ const TodoContainer = () => {
         }}
       >
         <Typography variant="h4" gutterBottom sx={{ color: '#F5F5F5' }}>Mis tareas</Typography>
-        <TaskToolbar />
+        <TaskToolbar setFilterStatus={setFilterStatus}/>
+        { isLoading ? 
+        <Box>
+          <CircularProgress />
+        </Box> : 
         <Box
           sx={{
             height: 400,
@@ -113,8 +87,11 @@ const TodoContainer = () => {
             },
           }}
         >
-          { TASKS.map( t => <TaskCard key={t.id} taskId={t.id} taskName={t.name} endsDate={t.endsDate} status={t.status} /> ) }
+          { filteredTasks?.map( t => <TaskCard key={t.id} taskId={t.id} taskName={t.name} endsDate={t.endsDate} status={t.status} handleClickOpen={handleClickOpen}/> ) }
+          <button onClick={handleClickOpen}>Abrir modal</button>
+          <TaskUpdaterModal taskId={taskToEditState} dialogStatus={ updaterModalState } handleOnClose={handleClose}/>
         </Box>
+        }
         <TaskInput />
       </Box>
     </Box>

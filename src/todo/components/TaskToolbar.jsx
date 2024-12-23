@@ -2,11 +2,12 @@ import { useState } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
-const TaskToolbar = () => {
+const TaskToolbar = ({ setFilterStatus }) => {
   const [taskStatus, setTaskStatus] = useState("all");
 
   const handleStatus = (event, status) => {
     setTaskStatus(status);
+    setFilterStatus(status);
   };
 
   return (
