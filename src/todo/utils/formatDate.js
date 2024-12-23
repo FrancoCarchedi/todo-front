@@ -1,13 +1,12 @@
 const formatDate = (dateString) => {
   const date = new Date(dateString);
 
-  const formatter = new Intl.DateTimeFormat('es-AR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
+  // Convertir la fecha a UTC para evitar desajustes con la zona horaria local
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const year = date.getUTCFullYear();
 
-  return formatter.format(date);
+  return `${day}/${month}/${year}`;
 };
 
 export default formatDate;

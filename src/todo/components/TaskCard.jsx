@@ -10,6 +10,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../auth/context/AuthContext';
 
 const TaskCard = ({ taskId = 0, taskName = "", endsDate = null, status = "", handleClickOpen = () => {} }) => {
+  console.log("endsDate", endsDate)
 
   const { user } = useContext( AuthContext )
 
