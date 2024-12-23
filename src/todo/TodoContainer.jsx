@@ -88,7 +88,6 @@ const TodoContainer = () => {
           }}
         >
           { filteredTasks?.map( t => <TaskCard key={t.id} taskId={t.id} taskName={t.name} endsDate={t.endsDate} status={t.status} handleClickOpen={handleClickOpen}/> ) }
-          <button onClick={handleClickOpen}>Abrir modal</button>
           <TaskUpdaterModal taskId={taskToEditState} dialogStatus={ updaterModalState } handleOnClose={handleClose}/>
         </Box>
         }

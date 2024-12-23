@@ -47,7 +47,7 @@ const Login = () => {
         setApiError(''); // Limpiar errores
         navigate('/'); // Redirigir después del login
       } else {
-        setApiError(response.message || 'Error al iniciar sesión.');
+        setApiError("Usuario o contraseña incorrectos.");
       }
     } catch (error) {
       console.log(error.message)
@@ -88,6 +88,7 @@ const Login = () => {
             helperText={formik.touched.password && formik.errors.password}/>
         </Box>
         <Box>
+          <Typography gutterBottom color='error'>{ apiError }</Typography>
           <Button type='submit' variant='contained'>Iniciar sesión</Button>
         </Box>
       </Box>
