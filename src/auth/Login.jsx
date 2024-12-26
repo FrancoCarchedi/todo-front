@@ -4,14 +4,16 @@ import * as Yup from 'yup';
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
-import { Button } from '@mui/material'
+import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
 import { useNavigate } from 'react-router';
 import { AuthContext } from './context/AuthContext';
 
 const Login = () => {
   const [apiError, setApiError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const { login, logout, logged } = useContext( AuthContext )
+  const { login, logged } = useContext( AuthContext )
 
   const navigate = useNavigate();
 
@@ -19,7 +21,7 @@ const Login = () => {
     if (logged) {
       navigate('/');
     }
-  }, [logged, navigate, logout])
+  }, [logged, navigate])
 
   const formik = useFormik({
     initialValues: {
@@ -39,6 +41,7 @@ const Login = () => {
       return;
     }
 
+    setLoading(true);
     try {
       const { email, password } = formik.values;
       const response = await login(email, password);
@@ -51,6 +54,8 @@ const Login = () => {
       }
     } catch (error) {
       setApiError('Ocurrió un error al intentar iniciar sesión.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -88,7 +93,14 @@ const Login = () => {
         </Box>
         <Box>
           <Typography gutterBottom color='error'>{ apiError }</Typography>
-          <Button type='submit' variant='contained'>Iniciar sesión</Button>
+          <Button 
+            type='submit' 
+            variant='contained'
+            disabled={loading}
+            startIcon={loading && <CircularProgress size={16} />}
+          >
+            { loading ? "Iniciando..." : "Iniciar sesión" }
+          </Button>
         </Box>
       </Box>
     </Box>
